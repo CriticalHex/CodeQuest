@@ -6,21 +6,26 @@ cases = int(sys.stdin.readline().rstrip())
 
 for caseNum in range(cases):
     bothyears = []
+    lastyear = []
+    thisyear = []
     line = sys.stdin.readline().rstrip()
-    lastyear = [(str(val) for val in line.split(SEPARATOR))]
-        
+    lastyear = line.split(SEPARATOR)
     line = sys.stdin.readline().rstrip()
-    thisyear = [(str(val) for val in line.split(SEPARATOR))]
+    thisyear = line.split(SEPARATOR)
+    for i in lastyear:
+        for j in thisyear:
+            if i == j:
+                bothyears.append(i)
+    for person in bothyears:
+        thisyear.remove(person)
+        lastyear.remove(person)
+    bothyears.sort()
+    bothyears_string = ",".join(bothyears)
+    thisyear.sort()
+    thisyear_string = ",".join(thisyear)
+    lastyear.sort()
+    lastyear_string = ",".join(lastyear)
+    print(lastyear_string)
+    print(bothyears_string)
+    print(thisyear_string)
     
-    for i in range(len(lastyear)):
-        for j in range(len(thisyear)):
-            if lastyear[i] == thisyear[j]:
-                bothyears.append(lastyear[i])
-                thisyear.remove[j]
-                lastyear.remove[i]
-    
-    for i in range(len(bothyears)):
-        print(bothyears[i],end=",")      
-    # print(lastyear)
-    # print(bothyears)
-    # print(thisyear)
