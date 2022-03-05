@@ -1,3 +1,4 @@
+'''System module'''
 import sys
 
 SEPARATOR = "|"
@@ -6,28 +7,25 @@ SEPARATOR = "|"
 cases = int(sys.stdin.readline().rstrip())
 
 for caseNum in range(cases):
-    BadAnagram = True
+    BAD_ANAGRAM = True
     line = sys.stdin.readline().rstrip()
-    
     word1, word2 = (val for val in line.split(SEPARATOR))
 
     if word1 != word2 and len(word1) == len(word2):
-        for i in range(len(word1)):
-            for j in range(len(word2)):
-                if word1[i] != word2[j]:
-                    BadAnagram = True
+        for i in word1:
+            for j in word2:
+                if i != j:
+                    BAD_ANAGRAM = True
                 else:
                     word2 = list(word2)
-                    word2[j] = "_"
-                    word2 = "".join(word2)
-                    BadAnagram = False
+                    word2.remove(j)
+                    BAD_ANAGRAM = False
                     break
-            if BadAnagram == True:
+            if BAD_ANAGRAM:
                 break
-    if BadAnagram == True:
+    if BAD_ANAGRAM:
         print(line, end = "")
         print(" = NOT AN ANAGRAM")
     else:
         print(line, end = "")
         print(" = ANAGRAM")
-        

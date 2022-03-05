@@ -1,3 +1,4 @@
+'''System module'''
 import sys
 
 SEPARATOR = " "
@@ -15,19 +16,17 @@ cases = int(sys.stdin.readline().rstrip())
 for caseNum in range(cases):
     subCases = int(sys.stdin.readline().rstrip())
     for subCase in range(subCases):
-        outputString = ""
+        OUTPUT_STRING = ""
         line = sys.stdin.readline().rstrip()
         line = line.upper()
-       
         for i in range(len(line)-1):
             if line[i] != " " and line[i+1] != " ":
-                outputString += NATO.get(line[i])
-                outputString += "-"
+                OUTPUT_STRING += NATO.get(line[i])
+                OUTPUT_STRING += "-"
             elif line[i] != " ":
-                outputString += NATO.get(line[i])
+                OUTPUT_STRING += NATO.get(line[i])
             else:
-                outputString += " "
-               
-        outputString += NATO.get(line[len(line)-1])
-       
-        print(outputString)
+                OUTPUT_STRING += " "
+        OUTPUT_STRING += NATO.get(line[len(line)-1])
+        print(OUTPUT_STRING)
+        

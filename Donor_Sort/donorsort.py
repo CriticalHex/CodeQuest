@@ -1,3 +1,4 @@
+'''System module'''
 import sys
 
 SEPARATOR = ","
@@ -20,12 +21,12 @@ for caseNum in range(cases):
         thisyear.remove(person)
         lastyear.remove(person)
     bothyears.sort()
-    bothyears_string = ",".join(bothyears)
+    BOTH = ",".join(bothyears)
     thisyear.sort()
-    thisyear_string = ",".join(thisyear)
+    THIS = ",".join(thisyear)
     lastyear.sort()
-    lastyear_string = ",".join(lastyear)
-    print(lastyear_string)
-    print(bothyears_string)
-    print(thisyear_string)
+    LAST = ",".join(lastyear)
+    print(LAST)
+    print(BOTH)
+    print(THIS)
     

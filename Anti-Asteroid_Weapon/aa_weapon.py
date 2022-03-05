@@ -1,10 +1,12 @@
+'''import libraries'''
 import sys
 import math
 
-def getKey(val):
+def get_key(val):
+    '''inverse of getValue'''
     for key, value in ASTEROIDS.items():
-         if val == value:
-             return key
+        if val == value:
+            return key
 
 SEPARATOR = " "
 
@@ -23,5 +25,5 @@ for caseNum in range(cases):
         DISTANCES.append(distance)
         ASTEROIDS.update({line : distance}) 
     DISTANCES.sort()
-    for i in range(len(DISTANCES)):
-        print(getKey(DISTANCES[i]))
+    for distance in DISTANCES:
+        print(get_key(distance))
