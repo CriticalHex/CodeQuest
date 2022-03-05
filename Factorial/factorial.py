@@ -1,3 +1,4 @@
+'''System module'''
 import sys
 from math import factorial
 
