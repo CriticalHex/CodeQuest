@@ -11,7 +11,6 @@ for caseNum in range(cases):
     DISCARD, EXTENSION = (str(val) for val in LINE.split(SEPARATOR))
     print(DICTIONARY.keys())
     if DICTIONARY.keys() == EXTENSION:
-        print("This is happening")
         DICTIONARY.update(EXTENSION, 2)
     else:
         DICTIONARY.update({EXTENSION:1})
