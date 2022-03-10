@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "C:\\Users\\787039\\Codequest"
+		},
+		{
+			"path": "C:\\Users\\787039\\source\\repos\\CodeQuest"
+		}
+	],
+	"settings": {
+		"terminal.integrated.profiles.windows": {
+			"PowerShell": {
+				"source": "PowerShell",
+				"icon": "terminal-powershell"
+			},
+			"Command Prompt": {
+				"path": [
+					"${env:windir}\\Sysnative\\cmd.exe",
+					"${env:windir}\\System32\\cmd.exe"
+				],
+				"icon": "terminal-cmd"
+			},
+			"GitBash": {
+				"path": [
+					"F:\\Program files\\Git\\bin\\bash.exe"
+				],
+				"icon": "terminal-bash"
+			}
+		},
+		"terminal.integrated.defaultProfile.windows": "Command Prompt"
+	}
+}
