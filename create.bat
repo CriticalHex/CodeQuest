@@ -1,9 +1,13 @@
 @echo off
-set dir_name=%*
-mkdir %dir_name%
+set formatted_input=%*
+set formatted_input=%formatted_input:-=_%
+mkdir %formatted_input%
 set top_dir=%CD%
-cd %dir_name%
-powershell.exe -C "wget "https://lmcodequestacademy.com/api/static/problems/%*" -O "%dir_name%.pdf"" >nul
-copy "%top_dir%\template.py" "%*.py" >nul
+cd %formatted_input%
+powershell.exe -C "wget "https://lmcodequestacademy.com/api/static/problems/%*" -O "%formatted_input%.pdf"" >nul
+copy "%top_dir%\template.py" "%formatted_input%.py" >nul
 nul> input.txt
 cd %top_dir%
+call code %formatted_input%\%formatted_input%.py
+call code %formatted_input%\%formatted_input%.pdf
+call code %formatted_input%\input.txt
