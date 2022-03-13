@@ -4,6 +4,10 @@ import sys
 
 SEPARATOR = " "
 
+def better_round(user_in, degree: str = "1.0"):
+    '''Round Half Up'''
+    return decimal.Decimal(user_in).quantize(decimal.Decimal(degree),rounding=decimal.ROUND_HALF_UP)
+
 def add(a,b):
     '''Add'''
     return a + b, b + a
@@ -34,6 +38,5 @@ for caseNum in range(cases):
         val1, val2 = mul(val1,val2)
     elif ari == "/":
         val1, val2 = div(val1,val2)
-    val1 = decimal.Decimal(val1).quantize(decimal.Decimal('1.0'), rounding=decimal.ROUND_HALF_UP)
-    val2 = decimal.Decimal(val2).quantize(decimal.Decimal('1.0'), rounding=decimal.ROUND_HALF_UP)
+    val1, val2 = better_round(val1), better_round(val2)
     print(val1, val2)
