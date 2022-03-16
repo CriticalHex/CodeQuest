@@ -29,14 +29,9 @@ for caseNum in range(cases):
     for i in range(LOOPS):
         if ENCODE[i] in CA:
             if DIRECTION[OTHER_I % DIRECTION_LEN] == 0:
-                for j in range(DISTANCE[OTHER_I % DISTANCE_LEN]):
-                    CODEARRAY.append(CODEARRAY.pop(0))
+                OUTPUT += CODEARRAY[(ALPHABET.get(ENCODE[i]) + DISTANCE[OTHER_I % DISTANCE_LEN]) % 26]
             elif DIRECTION[OTHER_I % DIRECTION_LEN] == 1:
-                for j in range(DISTANCE[OTHER_I % DISTANCE_LEN]):
-                    CODEARRAY.insert(0, CODEARRAY.pop(25))
-            OUTPUT += CODEARRAY[ALPHABET.get(ENCODE[i])]
-            CODEARRAY = ["a","b","c","d","e","f","g","h","i","j","k","l",
-                    "m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+                OUTPUT += CODEARRAY[(ALPHABET.get(ENCODE[i]) - DISTANCE[OTHER_I % DISTANCE_LEN]) % 26]
             OTHER_I += 1
         else:
             OUTPUT += ENCODE[i]
