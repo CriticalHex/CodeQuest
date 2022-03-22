@@ -2,15 +2,16 @@
 import sys
 import numpy as np
 
-def available(board):
+def available(board, player):
     '''Checks available moves'''
-    player = 1
     board_states = []
     for i in range(3):
         for j in range(3):
-            if board[i][j] != "*":
-                board[i][j] = "X" if player == 1 else "O"
+            if board[i][j] == "*":
+                board[i][j] = "X" if player else "O"
                 board_states.append(board)
+                board[i][j] = "*"
+    return board_states
 
 
 def game_over(board):
@@ -31,7 +32,7 @@ def game_over(board):
             return 1
         else:
             return -1
-    if len(available(board)) == 0:
+    if len(available(board, True)) == 0:
         return 0
 
 def minimax(position, depth, alpha, beta, maximizingPlayer):
@@ -40,7 +41,7 @@ def minimax(position, depth, alpha, beta, maximizingPlayer):
         return game_over(position)
     if maximizingPlayer:
         maxEval = -np.Infinity
-        for child in position:
+        for child in available(position):
             eval = minimax(child, depth - 1, alpha, beta, False)
             maxEval = max(maxEval, eval)
             alpha = max(alpha, eval)
@@ -63,6 +64,12 @@ for caseNum in range(cases):
     for _ in range(3):
         line = sys.stdin.readline().rstrip()
         BOARD.append(list(line))
-    minimax(BOARD, 9, -np.Infinity, np.Infinity, True)
-    print(np.matrix(BOARD))
+    #minimax(BOARD, 9, -np.Infinity, np.Infinity, True)
+    possible = available(BOARD, True)
+    for k in possible:
+        for i in range(3):
+            for j in range(3):
+                print(k[i])
+            print()
+    #print(np.matrix(BOARD))
     
