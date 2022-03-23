@@ -1,7 +1,7 @@
 '''System Module'''
 import sys
 import copy
-import numpy as np
+from numpy import Infinity
 
 def get_key(val):
     '''inverse of getValue'''
@@ -17,13 +17,13 @@ def available(board):
                 return True
     return False
 
-def possible(board, maximizing_player):
+def possible(board, maximizingPlayer):
     '''Checks available moves'''
     board_states = []
     for i in range(3):
         for j in range(3):
             if board[i][j] == "*":
-                board[i][j] = "X" if maximizing_player else "O"
+                board[i][j] = "X" if maximizingPlayer else "O"
                 board_states.append(copy.deepcopy(board))
                 board[i][j] = "*"
     return board_states
@@ -32,15 +32,15 @@ def game_over(board):
     '''Check if game is over'''
     for i in range(3):
         if board[i][0] == board[i][1] == board[i][2]:
-            if board[i][0] == "X":
+            if board[0][0] == "X":
                 return 1
-            if board[i][0] == "O":
+            if board[0][0] == "O":
                 return -1
     for i in range(3):
         if board[0][i] == board[1][i] == board[2][i]:
-            if board[0][i] == "X":
+            if board[0][0] == "X":
                 return 1
-            if board[0][i] == "O":
+            if board[0][0] == "O":
                 return -1
     if board[0][0] == board[1][1] == board[2][2]:
         if board[0][0] == "X":
@@ -55,30 +55,22 @@ def game_over(board):
     if not available(board):
         return 0
 
-def minimax(position, depth, alpha, beta, maximizing_player):
+def minimax(position, depth, maximizingPlayer):
     '''Recursive function to determine best possible moves in a turn based game'''
-    if depth == 0 or game_over(position) is not None:
-        # print(np.matrix(position))
-        # print(game_over(position))
+    if depth == 0 or game_over(position) in (0,1,-1):
         return game_over(position)
-    if maximizing_player:
-        max_eval = -10
+    if maximizingPlayer:
+        maxEval = -10000000
         for child in possible(position, True):
-            evaluation = minimax(child, depth - 1, alpha, beta, False)
-            max_eval = max(max_eval, evaluation)
-            alpha = max(alpha, evaluation)
-            if beta <= alpha:
-                break
-        return max_eval
+            eval = minimax(child, depth - 1, False)
+            maxEval = max(maxEval, eval)
+        return maxEval
     else:
-        min_eval = 10
+        minEval = 10000000
         for child in possible(position, False):
-            evaluation = minimax(child, depth - 1, alpha, beta, True)
-            min_eval = min(min_eval, evaluation)
-            beta = min(beta, evaluation)
-            if beta <= alpha:
-                break
-        return min_eval
+            eval = minimax(child, depth - 1, True)
+            minEval = min(minEval, eval)
+        return minEval
 
 cases = int(sys.stdin.readline().rstrip())
 
@@ -89,10 +81,8 @@ for caseNum in range(cases):
         line = sys.stdin.readline().rstrip()
         BOARD.append(list(line))
     BOARD = possible(BOARD, True)
-    LENGTH = len(BOARD)
-    for i in range(LENGTH):
-        MOVES.update({i:minimax(BOARD[i], 9, -10, 10, False)})
-    print(MOVES)
+    for i in range(len(BOARD)):
+        MOVES.update({i:minimax(BOARD[i], 9, False)})
     for i in range(3):
         for j in range(3):
             print(BOARD[get_key(max(MOVES.values()))][i][j], end="")
