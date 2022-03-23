@@ -1,7 +1,6 @@
 '''System Module'''
 import sys
 import copy
-import numpy as np
 
 def get_key(val):
     '''inverse of getValue'''
@@ -85,16 +84,25 @@ cases = int(sys.stdin.readline().rstrip())
 for caseNum in range(cases):
     BOARD = []
     MOVES = {}
+    DONE = False
     for _ in range(3):
         line = sys.stdin.readline().rstrip()
         BOARD.append(list(line))
     BOARD = possible(BOARD, True)
-    LENGTH = len(BOARD)
-    for i in range(LENGTH):
-        MOVES.update({i:minimax(BOARD[i], 9, -10, 10, False)})
-    print(MOVES)
-    for i in range(3):
-        for j in range(3):
-            print(BOARD[get_key(max(MOVES.values()))][i][j], end="")
-        print()
+    for game in BOARD:
+        if game_over(game) == 1:
+            for i in range(3):
+                for j in range(3):
+                    print(game[i][j], end="")
+                print()
+            BOARD.clear()
+            DONE = True
+    if not DONE:
+        LENGTH = len(BOARD)
+        for i in range(LENGTH):
+            MOVES.update({i:minimax(BOARD[i], 9, -10, 10, False)})
+        for i in range(3):
+            for j in range(3):
+                print(BOARD[get_key(max(MOVES.values()))][i][j], end="")
+            print()
     
