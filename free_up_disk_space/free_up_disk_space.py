@@ -62,8 +62,6 @@ cases = int(sys.stdin.readline().rstrip())
 
 for caseNum in range(cases):
     File = namedtuple('File',['score','name','size'])
-    # Adding values
-    F1 = File('feil1','231233','12312323232')
     files = []
     line = sys.stdin.readline().rstrip()
     file_num, disk_space = (val for val in line.split(" "))
