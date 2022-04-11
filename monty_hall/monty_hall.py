@@ -22,10 +22,7 @@ for caseNum in range(cases):
     line = sys.stdin.readline().rstrip()
     door_number, rounds, doors_per_round = (int(val) for val in line.split(SEPARATOR))
     START = 0
-    doors = [0] * door_number
-    chance = 100 / door_number
-    for i in range(START, door_number):
-        doors[i] = chance
+    doors = [100 / door_number] * door_number
     for i in range(rounds):
         REDIST = 0
         #contestant picks door
