@@ -33,5 +33,4 @@ for caseNum in range(cases):
                 else:
                     OUTPUT += TABLE.get(letter)
         print(OUTPUT)
-    print()
     
