@@ -14,7 +14,7 @@ def round_half_up(original):
     rounded = str(floored / 1000.0)
     return rounded
 
-def df(x):
+def d_f(x):
     '''Derivative'''
     if x == 0:
         return 1
@@ -25,7 +25,7 @@ def nonrec_eulers(x0,y0,h,n):
     seq = [(x0, y0)]
     for i in range(1,n+1):
         xn = h + seq[i-1][0]
-        yn = seq[i-1][1] + h * df(seq[i-1][0])
+        yn = seq[i-1][1] + h * d_f(seq[i-1][0])
         seq.append((xn,yn))
     return seq[n][1]
 
