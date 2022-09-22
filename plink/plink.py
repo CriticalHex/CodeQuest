@@ -24,7 +24,7 @@ def norec(B):
             stack.append([i + 1, j + 1, path + "R", total + B[i][j]])
 
 def plinko(B, i = 0, j = 0, path = "", total = 0):
-    '''Recursive function to determine best possible moves in a turn based game'''
+    '''Recursive function to determine best plinko path in a given board'''
     if i >= len(B) - 1:
         results[path] = total + B[i][j]
     else:
