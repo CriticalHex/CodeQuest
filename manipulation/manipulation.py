@@ -2,6 +2,7 @@
 import sys
 import decimal
 
+
 SEPERATOR = " "
 
 cases = int(sys.stdin.readline().rstrip())
