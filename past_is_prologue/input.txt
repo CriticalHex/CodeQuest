@@ -1,0 +1,8 @@
+1 
+6 
+A1,Code Questers,Day,E1,true 
+A2,Maintenance,Day,E1,false 
+A3,LM Peeps,Night,E1,true 
+A4,Code Questers,Day,E2,true
+A3,LM Peeps,Night,E3,false 
+A4,Code Questers,Day,E3,false
