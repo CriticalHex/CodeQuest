@@ -41,5 +41,6 @@ for caseNum in range(cases):
                     events.append(Event(event, day=1))
                 if time == "Night":
                     events.append(Event(event, night=1))
+    events.sort(key=lambda x: x.name)
     for e in events:
         e.print()
