@@ -53,10 +53,22 @@ for caseNum in range(cases):
         failed = sys.stdin.readline().rstrip()
         to_restart = nodes[failed].get_child_tree()
         to_restart.append(nodes[failed])
-        to_restart.sort(key=lambda node: node.name)
-        max_level = sorted(to_restart, key=lambda x: x.level, reverse=True)[0].level
+        to_restart.sort(key=lambda x: x.level, reverse=True)
+        max_level = to_restart[0].level
+        per_level: list[list[Node]] = []
         for level in range(max_level, -1, -1):
-            for node in to_restart:
-                if node.level == level:
-                    print("restart " + node.name)
+            temp: list[Node] = []
+            for n in to_restart:
+                if n.level == level:
+                    temp.append(n)
+            per_level.append(temp)
+        for level in per_level:
+            level.sort(key=lambda x: x.name)
+            for n in level:
+                print("restart " + n.name)
         print("exit")
+        # for level in range(max_level, -1, -1):
+        #     for node in to_restart:
+        #         if node.level == level:
+        #             print("restart " + node.name)
+        # print("exit")

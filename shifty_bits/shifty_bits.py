@@ -20,13 +20,18 @@ def bin_to_double(b: str):
     return struct.unpack(">d", bf)[0]
 
 
-def better_round(user_in: float, degree: str = "1.0") -> float:
+def better_round(val: float, n_digits: int = 0) -> float:
     """Round Half Up"""
-    return float(
-        decimal.Decimal(user_in).quantize(
-            decimal.Decimal(degree), rounding=decimal.ROUND_HALF_UP
-        )
-    )
+    val *= 10**n_digits
+    result = int(val + (0.5 if val >= 0 else -0.5))
+    return result / 10**n_digits
+
+
+def float_to_scientific(val: float) -> str:
+    if val > 99999.99999 or val < 0.00001:
+        strval = f"{val:.5e}"
+        return strval
+    return str(val)
 
 
 for caseNum in range(cases):
@@ -56,15 +61,14 @@ for caseNum in range(cases):
             arr = reversed(binary[start : start + size])
             s = "".join(arr)
             unrounded = bin_to_float(s)
-            semirounded = better_round(unrounded, "1.00000")
-            rounded = f"{semirounded:>e}"
-            print(rounded)
             # rounded = str(better_round(unrounded, "1.00000"))
             # first, second = rounded.split("+")
-            print(better_round(unrounded, "1.00000"))
+            print(better_round(unrounded, 5))
         elif datatype == "double":
             arr = reversed(binary[start : start + size])
             s = "".join(arr)
             unrounded = bin_to_double(s)
+            # print(f"{unrounded:f}")
             assert isinstance(unrounded, float)
-            print(f"{unrounded:.5e}")
+            # print(f"{unrounded:.5e}")
+            print(float_to_scientific(better_round(unrounded, 5)))
