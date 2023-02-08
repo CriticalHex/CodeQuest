@@ -59,5 +59,4 @@ for caseNum in range(cases):
             for node in to_restart:
                 if node.level == level:
                     print("restart " + node.name)
-
         print("exit")
