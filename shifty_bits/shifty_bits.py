@@ -1,11 +1,20 @@
 """System Module"""
 import sys
 import struct
-import decimal
+from codecs import decode
 
 SEPARATOR = " "
 
 cases = int(sys.stdin.readline().rstrip())
+
+
+def int_to_bytes(n: int, length: int):  # Helper function
+    """Int/long to byte string.
+
+    Python 3.2+ has a built-in int.to_bytes() method that could be used
+    instead, but the following works in earlier versions including 2.x.
+    """
+    return decode("%%0%dx" % (length << 1) % n, "hex")[-length:]
 
 
 def bin_to_float(b: str):
@@ -28,10 +37,14 @@ def better_round(val: float, n_digits: int = 0) -> float:
 
 
 def float_to_scientific(val: float) -> str:
-    if val > 99999.99999 or val < 0.00001:
+    if abs(val) > 99999.99999 or abs(val) < 0.00001:
         strval = f"{val:.5e}"
-        return strval
-    return str(val)
+        first, second = strval.split("e")
+        exp = list(second[1:])
+        while len(exp) < 3:
+            exp.insert(0, "0")
+        return f"{first}e{second[0]}{''.join(exp)}"
+    return str(better_round(val, 5))
 
 
 for caseNum in range(cases):
@@ -63,12 +76,11 @@ for caseNum in range(cases):
             unrounded = bin_to_float(s)
             # rounded = str(better_round(unrounded, "1.00000"))
             # first, second = rounded.split("+")
-            print(better_round(unrounded, 5))
+            print(float_to_scientific(better_round(unrounded, 5)))
         elif datatype == "double":
             arr = reversed(binary[start : start + size])
             s = "".join(arr)
             unrounded = bin_to_double(s)
             # print(f"{unrounded:f}")
-            assert isinstance(unrounded, float)
             # print(f"{unrounded:.5e}")
-            print(float_to_scientific(better_round(unrounded, 5)))
+            print(float_to_scientific(unrounded))
