@@ -53,8 +53,10 @@ def float_to_scientific(val: float) -> str:
 
 
 for caseNum in range(cases):
-    hex_in = int(sys.stdin.readline().rstrip(), 16)
-    binary = list(f"{hex_in:0>b}")
+    line = sys.stdin.readline().rstrip()
+    bin_length = len(line) * 4
+    hex_in = int(line, 16)
+    binary = list(f"{hex_in:0>{bin_length}b}")
     binary.reverse()
     n_measurands = int(sys.stdin.readline().rstrip())
     for _ in range(n_measurands):
