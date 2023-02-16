@@ -73,6 +73,12 @@ for caseNum in range(cases):
         for j, room in enumerate(row):
             if j == len(row) - 1:
                 room.directions[1] = False
+            if j == 0:
+                room.directions[3] = False
+            if i == len(maze) - 1:
+                room.directions[2] = False
+            if i == 0:
+                room.directions[0] = False
 
     ################################### Actually solve the maze ###################################
 
@@ -111,5 +117,10 @@ for caseNum in range(cases):
         for row in i:
             if row.is_exit:
                 print(row.distance)
+
+    # for i in maze:
+    #     for j in i:
+    #         print(j.directions, end = " ")
+    #     print()
 
         #loop through the thing
