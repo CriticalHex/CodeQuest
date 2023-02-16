@@ -1,45 +1,88 @@
-'''System Module'''
+"""System Module"""
 import sys
-import numpy as np
+
 
 class Piece:
-    '''All the chess pieces hopefully'''
-    def __init__(self, index_x: int, index_y: int, team: str):
-        self.x = index_y
-        self.y = index_y
-        self.team = team
-        self.available_moves = []
-        self.available_captures = []
+    """All the chess pieces hopefully"""
+
+    def __init__(self, x: int, y: int, piece: str):
+        self.pos = (x, y)
+        self.piece = piece
+        self.team = "WHITE" if piece.isupper() else "BLACK"
+        self.available_moves: list[tuple[int, int]] = []
+        self.available_captures: list[Piece] = []
+        self.possible_moves: list[tuple[int, int]] = []
+
+    def get_available_moves(self, board: list["Piece"]):
+        """Creates a list of all moves available to this piece"""
+
+
+class Knight(Piece):
+    """The Knight"""
+
+    def __init__(self, x: int, y: int, piece: str):
+        super().__init__(x, y, piece)
+        self.possible_moves = [
+            (x + 1, y - 2),
+            (x + 2, y - 1),
+            (x + 2, y + 1),
+            (x + 1, y + 2),
+            (x - 1, y + 2),
+            (x - 2, y - 1),
+            (x - 2, y + 1),
+            (x - 1, y + 2),
+        ]
+
+    def get_available_moves(self, board: list["Piece"]):
+        for pos in self.possible_moves:
+            for piece in board:
+                if piece.pos == pos:
+                    if piece.team == self.team:
+                        continue
+                    self.available_captures.append(piece)
+                self.available_moves.append(pos)
+
 
 class King(Piece):
-    '''The king'''
-    def get_available_moves(self, board):
-        '''Creates a list of all moves available to this piece'''
-        for i in range(-1,2):
-            for j in range(-1,2):
-                if board[i][j] == ".":
-                    self.available_moves.append(self.y - i, self.x - j)
-                    #need vector for all piece options.
-                    #need to consider piece checking order
-                    #all pieces except king? pretty sure this has flaws, don't know what yet
-                    #i thought the check all of one side would work, i dont think it does.
-                    #imma watch sebastian lauges video on this
+    """The king"""
+
+    def __init__(self, x: int, y: int, piece: str):
+        super().__init__(x, y, piece)
+        self.possible_moves = [
+            (x + 1, y),
+            (x - 1, y),
+            (x + 1, y + 1),
+            (x - 1, y + 1),
+            (x + 1, y - 1),
+            (x - 1, y - 1),
+            (x, y - 1),
+            (x, y + 1),
+        ]
+
+    def get_available_moves(self, board: list["Piece"]):
+        """More like attempt escape"""
+        for pos in self.possible_moves:
+            for piece in board:
+                if piece.pos == pos:
+                    if piece.team == self.team:
+                        continue
+                    self.available_captures.append(piece)
+                self.available_moves.append(pos)
 
 
+def main():
 
-SEPARATOR = " "
-ALPHA = ["a","b","c","d","e","f","g","h","i","j","k","l",
-"m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-CAPALPHA = ["A","B","C","D","E","F","G","H","I","J","K","L",
-"M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    cases = int(sys.stdin.readline().rstrip())
 
-cases = int(sys.stdin.readline().rstrip())
+    for _ in range(cases):
+        board: list[Piece] = []
+        for y in range(8):
+            line = sys.stdin.readline().rstrip()
+            for x, c in enumerate(line):
+                if c != ".":
+                    board.append(Piece(x, y, c))
+        for piece in board:
+            print(piece.piece)
 
-for caseNum in range(cases):
-    board = []
-    for i in range(8):
-        line = sys.stdin.readline().rstrip()
-        board.append(list(line))
-    print(np.matrix(board))
-    print()
-    
+
+main()
