@@ -16,6 +16,88 @@ class Piece:
     def get_available_moves(self, board: list["Piece"]):
         """Creates a list of all moves available to this piece"""
 
+    def prune_edges(self):
+        new_moves: list[tuple[int, int]] = []
+        for move in self.possible_moves:
+            if (7 < move[0] < 0) or (7 < move[1] < 0):
+                continue
+            new_moves.append(move)
+        self.possible_moves = new_moves
+
+
+def get_piece(at_pos: tuple[int, int], board: list[Piece]):
+    for piece in board:
+        if piece.pos == at_pos:
+            return piece
+
+
+class Pawn(Piece):
+    """The Pawn"""
+
+    def __init__(self, x: int, y: int, piece: str):
+        super().__init__(x, y, piece)
+        self.at_home = False
+        if self.team == "BLACK":
+            move_dir = 1
+            if self.pos[1] == 1:
+                self.at_home = True
+        else:
+            move_dir = -1
+            if self.pos[1] == 6:
+                self.at_home = True
+        self.possible_moves = [
+            (x, y + move_dir),
+            (x, y + (2 * move_dir)),
+        ]
+        self.attack_moves = [
+            (x + 1, y + move_dir),
+            (x - 1, y + move_dir),
+        ]
+
+    def get_available_moves(self, board: list["Piece"]):
+        piece_pos = [piece.pos for piece in board]
+        if self.possible_moves[0] not in piece_pos:
+            self.available_moves.append(self.possible_moves[0])
+            if self.at_home and self.possible_moves[1] not in piece_pos:
+                self.available_moves.append(self.possible_moves[1])
+        for pos in self.attack_moves:
+            for piece in board:
+                if piece.pos == pos:
+                    if piece.team == self.team:
+                        continue
+                    self.available_captures.append(piece)
+                    self.available_moves.append(pos)
+
+
+class Rook(Piece):
+    """The Rook"""
+
+    def __init__(self, x: int, y: int, piece: str):
+        super().__init__(x, y, piece)
+        left_line: list[tuple[int, int]] = []
+        right_line: list[tuple[int, int]] = []
+        up_line: list[tuple[int, int]] = []
+        down_line: list[tuple[int, int]] = []
+        for i in range(x, 8):
+            right_line.append((x + i, y))
+        for i in range(x, -1, -1):
+            left_line.append((x + i, y))
+        for i in range(y, 8):
+            down_line.append((x, y + i))
+        for i in range(y, -1, -1):
+            up_line.append((x, y + i))
+        self.lines = [left_line, right_line, up_line, down_line]
+
+    def get_available_moves(self, board: list["Piece"]):
+        for i, line in enumerate(self.lines):
+            index = len(line)
+            for pos in line:
+                if (piece:=get_piece(pos, board)):
+                    index = i
+                    if piece.team != self.team:
+                        self.available_captures.append(piece)
+                self.available_moves.extend(line[0:index])
+
 
 class Knight(Piece):
     """The Knight"""
@@ -40,7 +122,8 @@ class Knight(Piece):
                     if piece.team == self.team:
                         continue
                     self.available_captures.append(piece)
-                self.available_moves.append(pos)
+                if pos not in self.available_moves:
+                    self.available_moves.append(pos)
 
 
 class King(Piece):
