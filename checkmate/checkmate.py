@@ -19,7 +19,7 @@ class Piece:
     def prune_edges(self):
         new_moves: list[tuple[int, int]] = []
         for move in self.possible_moves:
-            if (7 < move[0] < 0) or (7 < move[1] < 0):
+            if move[0] > 7 or move[0] < 0 or move[1] > 7 or move[1] < 0:
                 continue
             new_moves.append(move)
         self.possible_moves = new_moves
@@ -53,6 +53,7 @@ class Pawn(Piece):
             (x + 1, y + move_dir),
             (x - 1, y + move_dir),
         ]
+        self.prune_edges()
 
     def get_available_moves(self, board: list["Piece"]):
         piece_pos = [piece.pos for piece in board]
@@ -89,14 +90,101 @@ class Rook(Piece):
         self.lines = [left_line, right_line, up_line, down_line]
 
     def get_available_moves(self, board: list["Piece"]):
-        for i, line in enumerate(self.lines):
+        for line in self.lines:
             index = len(line)
-            for pos in line:
-                if (piece:=get_piece(pos, board)):
+            for i, pos in enumerate(line):
+                if piece := get_piece(pos, board):
                     index = i
                     if piece.team != self.team:
                         self.available_captures.append(piece)
-                self.available_moves.extend(line[0:index])
+                        self.available_moves.append(pos)
+                    break
+            self.available_moves.extend(line[0:index])
+
+
+class Bishop(Piece):
+    """The Bishop"""
+
+    def __init__(self, x: int, y: int, piece: str):
+        super().__init__(x, y, piece)
+        left_up_line: list[tuple[int, int]] = []
+        right_up_line: list[tuple[int, int]] = []
+        left_down_line: list[tuple[int, int]] = []
+        right_down_line: list[tuple[int, int]] = []
+        for i in range(x, 8):
+            right_up_line.append((x + i, y - i))
+        for i in range(x, -1, -1):
+            left_up_line.append((x - i, y - i))
+        for i in range(y, 8):
+            right_down_line.append((x + i, y + i))
+        for i in range(y, -1, -1):
+            left_down_line.append((x - i, y + i))
+        self.lines = [left_up_line, right_up_line, left_down_line, right_down_line]
+
+    def get_available_moves(self, board: list["Piece"]):
+        for line in self.lines:
+            index = len(line)
+            for i, pos in enumerate(line):
+                if piece := get_piece(pos, board):
+                    index = i
+                    if piece.team != self.team:
+                        self.available_captures.append(piece)
+                        self.available_moves.append(pos)
+                    break
+            self.available_moves.extend(line[0:index])
+
+
+class Queen(Piece):
+    """The Queen"""
+
+    def __init__(self, x: int, y: int, piece: str):
+        super().__init__(x, y, piece)
+        left_up_line: list[tuple[int, int]] = []
+        right_up_line: list[tuple[int, int]] = []
+        left_down_line: list[tuple[int, int]] = []
+        right_down_line: list[tuple[int, int]] = []
+        left_line: list[tuple[int, int]] = []
+        right_line: list[tuple[int, int]] = []
+        up_line: list[tuple[int, int]] = []
+        down_line: list[tuple[int, int]] = []
+        for i in range(x, 8):
+            right_line.append((x + i, y))
+        for i in range(x, -1, -1):
+            left_line.append((x + i, y))
+        for i in range(y, 8):
+            down_line.append((x, y + i))
+        for i in range(y, -1, -1):
+            up_line.append((x, y + i))
+        for i in range(x, 8):
+            right_up_line.append((x + i, y - i))
+        for i in range(x, -1, -1):
+            left_up_line.append((x - i, y - i))
+        for i in range(y, 8):
+            right_down_line.append((x + i, y + i))
+        for i in range(y, -1, -1):
+            left_down_line.append((x - i, y + i))
+        self.lines = [
+            left_line,
+            right_line,
+            up_line,
+            down_line,
+            left_up_line,
+            right_up_line,
+            left_down_line,
+            right_down_line,
+        ]
+
+    def get_available_moves(self, board: list["Piece"]):
+        for line in self.lines:
+            index = len(line)
+            for i, pos in enumerate(line):
+                if piece := get_piece(pos, board):
+                    index = i
+                    if piece.team != self.team:
+                        self.available_captures.append(piece)
+                        self.available_moves.append(pos)
+                    break
+            self.available_moves.extend(line[0:index])
 
 
 class Knight(Piece):
@@ -114,6 +202,7 @@ class Knight(Piece):
             (x - 2, y + 1),
             (x - 1, y + 2),
         ]
+        self.prune_edges()
 
     def get_available_moves(self, board: list["Piece"]):
         for pos in self.possible_moves:
@@ -141,16 +230,57 @@ class King(Piece):
             (x, y - 1),
             (x, y + 1),
         ]
+        self.prune_edges()
 
     def get_available_moves(self, board: list["Piece"]):
         """More like attempt escape"""
         for pos in self.possible_moves:
-            for piece in board:
+            if piece := get_piece(pos, board):
                 if piece.pos == pos:
                     if piece.team == self.team:
                         continue
                     self.available_captures.append(piece)
+                    self.available_moves.append(pos)
+            if pos not in self.available_moves:
                 self.available_moves.append(pos)
+
+
+def find_check(board: list[Piece]):
+    for piece in board:
+        if piece.piece.lower() == "k":
+            for other in board:
+                if other is not piece:
+                    if piece.pos in other.available_moves:
+                        return piece
+
+
+def is_checkmate(check: Piece, board: list[Piece]):
+    escapes: list[tuple[int,int]] = []
+    for other in board:
+        if other is not check:
+            for move in check.available_moves:
+                if move in other.available_moves:
+                    continue
+                
+
+
+def get_type(c: str):
+    if c.lower() == "k":
+        return King
+    elif c.lower() == "q":
+        return Queen
+    elif c.lower() == "r":
+        return Rook
+    elif c.lower() == "b":
+        return Bishop
+    elif c.lower() == "n":
+        return Knight
+    elif c.lower() == "p":
+        return Pawn
+    else:
+        # should not happen
+        print("ERROR")
+        return Piece
 
 
 def main():
@@ -163,9 +293,18 @@ def main():
             line = sys.stdin.readline().rstrip()
             for x, c in enumerate(line):
                 if c != ".":
-                    board.append(Piece(x, y, c))
+                    board.append(get_type(c)(x, y, c))
         for piece in board:
-            print(piece.piece)
+            piece.get_available_moves(board)
+        if check := find_check(board):
+            print(check.piece)
+            if is_checkmate(check, board):
+                winner = "WHITE" if check.team == "BLACK" else "WHITE"
+                print(f"CHECKMATE {winner}")
+            else:
+                print("NO CHECKMATE")
+        else:
+            print("NO CHECKMATE")
 
 
 main()
