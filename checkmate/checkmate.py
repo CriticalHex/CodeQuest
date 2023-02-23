@@ -255,13 +255,22 @@ def find_check(board: list[Piece]):
 
 
 def is_checkmate(check: Piece, board: list[Piece]):
-    escapes: list[tuple[int,int]] = []
-    for other in board:
-        if other is not check:
-            for move in check.available_moves:
-                if move in other.available_moves:
-                    continue
-                
+    def find_move(check: Piece, move: tuple[int, int], board: list[Piece]):
+        for piece in board:
+            if piece.team != check.team:
+                for pos in piece.available_moves:
+                    if pos == move:
+                        return True
+        return False
+
+    escapes: list[tuple[int, int]] = []
+    for move in check.available_moves:
+        if not find_move(check, move, board):
+            escapes.append(move)
+    check.available_moves = escapes
+    if len(escapes) > 0:
+        return False
+    return True
 
 
 def get_type(c: str):
