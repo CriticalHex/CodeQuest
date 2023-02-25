@@ -4,14 +4,11 @@ from math import sqrt
 
 
 def circle(radius: float, x: float):
+    if x > radius:
+        return -1
     xsq = x**2
     rsq = radius**2
-    if radius == 0:
-        return -1
-    try:
-        return sqrt(rsq - xsq)
-    except ValueError:
-        return -1
+    return sqrt(rsq - xsq)
 
 
 def main():
