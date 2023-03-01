@@ -21,7 +21,10 @@ def main():
         savings: float = 0
         for _ in range(n_charges):
             charge = float(sys.stdin.readline().rstrip())
-            rounded = int(charge + 1)
+            if int(charge) != charge:
+                rounded = int(charge + 1)
+            else:
+                rounded = int(charge)
             savings += rounded - charge
             print(rounded)
         print(better_round(savings, 2))

@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Diff Check",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}\\diffchecker.py",
+                "${fileDirname}"
+            ]
+        }
+    ]
+}

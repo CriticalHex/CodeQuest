@@ -39,21 +39,12 @@ def main():
         words: list[str] = []
         for _ in range(lines):
             line = sys.stdin.readline().rstrip().upper()
-            start = 0
-            stop = 0
             newline = ""
             for c in line:
                 if c in string.ascii_letters or c == " ":
                     newline += c
             line = newline
-            for c in line:
-                if c != " ":
-                    stop += 1
-                else:
-                    words.append(line[start:stop])
-                    stop += 1
-                    start = stop
-            words.append(line[start:stop])
+            words.extend(line.split(" "))
         for word in words:
             for di in digraph(word):
                 if digraphs.get(di) is None:
