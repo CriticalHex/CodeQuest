@@ -2,28 +2,35 @@
 import sys
 
 
-def direct(x1: int, y1: int, x2: int, y2: int):
-    steep = abs(y2 - y1) > abs(x2 - x1)
-    if steep:
-        x1, y1 = y1, x1
-        x2, y2 = y2, x2
-    if x1 > x2:
-        x1, x2 = x2, x1
-        y1, y2 = y2, y1
-    dx = x2 - x1
-    dy = abs(y2 - y1)
-    error = dx // 2
-    ystep = 1 if y1 > y2 else -1
-    y = y1
-    for x in range(x1, x2 + 1):
-        # y, x (backwards) or x, y (as inputted)
-        val = (y if steep else x, x if steep else y)
-        if val[1] >= 0:
-            yield val
-        error = error - dy
-        if error < 0:
-            y += ystep
-            error += dx
+def bresenham(x0: int, y0: int, x1: int, y1: int):
+    """Yield integer coordinates on the line from (x0, y0) to (x1, y1).
+    Input coordinates should be integers.
+    The result will contain both the start and the end point.
+    """
+    dx: int = x1 - x0
+    dy: int = y1 - y0
+
+    xsign = 1 if dx > 0 else -1
+    ysign = 1 if dy > 0 else -1
+
+    dx = abs(dx)
+    dy = abs(dy)
+
+    if dx > dy:
+        xx, xy, yx, yy = xsign, 0, 0, ysign
+    else:
+        dx, dy = dy, dx
+        xx, xy, yx, yy = 0, ysign, xsign, 0
+
+    d = 2 * dy - dx
+    y = 0
+
+    for x in range(dx + 1):
+        yield x0 + x * xx + y * yx, y0 + x * xy + y * yy
+        if d >= 0:
+            y += 1
+            d -= 2 * dx
+        d += 2 * dy
 
 
 def main():
@@ -48,20 +55,16 @@ def main():
         viable: list[str] = []
         for i, row in enumerate(grid):
             for j, space in enumerate(row):
-                for i in range(1, n_antennae + 1):
-                    if space == str(i):
-                        for pos in direct(j, i, *space0):
-                            if grid[pos[1]][pos[0]] == "#":
-                                break
-                        else:
-                            viable.append(space)
+                if space in (str(k) for k in list(range(1, n_antennae + 1))):
+                    for pos in bresenham(j, i, *space0):
+                        if grid[pos[1]][pos[0]] == "#":
+                            break
+                    else:
+                        viable.append(space)
 
         if viable:
             viable.sort()
-            output = ""
-            for v in viable:
-                output += v + " "
-            print(output.rstrip())
+            print(*viable)
         else:
             print("No viable locations")
 

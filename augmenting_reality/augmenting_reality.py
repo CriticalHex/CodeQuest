@@ -11,6 +11,10 @@ def circle(radius: float, x: float):
     return sqrt(rsq - xsq)
 
 
+def dist(x: float, y: float):
+    return sqrt(x**2 + y**2)
+
+
 def main():
 
     cases = int(sys.stdin.readline().rstrip())
@@ -21,11 +25,12 @@ def main():
         for i in range(int(height + 1)):
             for j in range(int(width + 1)):
                 if i > circle(radius, j):
+                # if dist(j, i) > radius:
                     pairs.append((j, i))
         pairs.sort(key=lambda x: x[0])
         for pair in pairs:
             x, y = pair
-            print(f"{x}, {y}")
+            print(f"{x},{y}")
 
 
 main()

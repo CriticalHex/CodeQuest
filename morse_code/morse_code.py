@@ -33,10 +33,9 @@ def letters_from_morse(line: str):
     start = 0
     while start < len(line):
         end, add = find_end(line, start)
-        if line[start:end]:
-            morse.append(line[start:end].lstrip())
-            if add == 7:
-                morse.append(" ")
+        morse.append(line[start:end])
+        if add == 7:
+            morse.append(" ")
         start = end + add
     return morse
 
@@ -63,11 +62,11 @@ def main():
         print(encoded)
 
         dline = sys.stdin.readline().rstrip()
-        dwords = letters_from_morse(dline)
+        dletters = letters_from_morse(dline)
         decoded = ""
-        for word in dwords:
-            if word != " ":
-                decoded += morse_to_letter[word]
+        for letter in dletters:
+            if letter != " ":
+                decoded += morse_to_letter[letter]
             else:
                 decoded += " "
         decoded = decoded.rstrip()
