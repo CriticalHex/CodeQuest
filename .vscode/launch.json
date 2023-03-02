@@ -10,7 +10,8 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": [ "<", "${fileDirname}/input.txt"]
+            "args": [ "<", "${fileDirname}/input.txt"],
+            "postDebugTask": "Diff Check"
         }
     ]
 }

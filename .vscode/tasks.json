@@ -7,7 +7,7 @@
             "command": "python",
             "args": [
                 "${workspaceFolder}\\diffchecker.py",
-                "${fileDirname}"
+                "${relativeFileDirname}"
             ]
         }
     ]

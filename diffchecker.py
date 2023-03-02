@@ -3,13 +3,7 @@ import sys
 
 args = sys.argv
 
-# ccpath = "C:/Users/787039/source/vscode/CodeQuest/"
-problem_name = args[0]
-print()
-print("RUNNING")
-print(problem_name)
-
-exit()
+problem_name = args[1]
 
 script = f"{problem_name}/{problem_name}.py"
 
@@ -39,6 +33,9 @@ print("Expected = Generated:", equal)
 if not equal:
     gen_lines = generated_out.split("\n")
     expec_lines = expected_out.split("\n")
+    longest = len(max(gen_lines, key=len))
     for i, c in enumerate(gen_lines):
         if gen_lines[i] != expec_lines[i]:
-            print(f"{gen_lines[i]} != {expec_lines[i]}")
+            print(
+                f"{gen_lines[i] + ''.join(' ' for _ in range(longest - len(gen_lines[i])))} | {expec_lines[i]}"
+            )
