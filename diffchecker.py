@@ -28,7 +28,7 @@ generated_out = temp
 
 equal = expected_out == generated_out
 
-print("Expected = Generated:", equal)
+print("Generated = Expected:", equal)
 
 if not equal:
     gen_lines = generated_out.split("\n")
