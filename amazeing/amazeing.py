@@ -117,10 +117,3 @@ for caseNum in range(cases):
         for row in i:
             if row.is_exit:
                 print(row.distance)
-
-    # for i in maze:
-    #     for j in i:
-    #         print(j.directions, end = " ")
-    #     print()
-
-        #loop through the thing

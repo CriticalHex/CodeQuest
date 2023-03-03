@@ -11,9 +11,13 @@ del samples.zip
 copy "samples\1.in" "input.txt">nul
 copy "samples\1.out" "output.txt">nul
 rmdir /S /Q samples
-copy "%top_dir%\template.py" "%formatted_input%.py">nul
-rem break>input.txt
+if not exist "%formatted_input%.py" (
+    copy "%top_dir%\template.py" "%formatted_input%.py">nul
+) else (
+    copy "%formatted_input%.py" "%formatted_input%_old.py">nul
+    copy "%top_dir%\template.py" "%formatted_input%.py">nul
+)
 cd %top_dir%
 call code %formatted_input%\%formatted_input%.py
 call code %formatted_input%\%formatted_input%.pdf
-call code %formatted_input%\input.txt
+rem call code %formatted_input%\input.txt

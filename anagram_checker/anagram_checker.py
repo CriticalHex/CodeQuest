@@ -1,31 +1,25 @@
-'''System module'''
+"""System Module"""
 import sys
 
-SEPARATOR = "|"
+
+def main():
+
+    cases = int(sys.stdin.readline().rstrip())
+    for _ in range(cases):
+        line = sys.stdin.readline().rstrip()
+        word1, word2 = line.split("|")
+        rem1, rem2 = list(word1), list(word2)
+        if word1 == word2:
+            print(f"{line} = NOT AN ANAGRAM")
+        else:  # anagram check
+            for c in word1:
+                if c in word2 and c in rem1 and c in rem2:
+                    rem1.remove(c)
+                    rem2.remove(c)
+            if not rem1 and not rem2:
+                print(f"{line} = ANAGRAM")
+            else:
+                print(f"{line} = NOT AN ANAGRAM")
 
 
-cases = int(sys.stdin.readline().rstrip())
-
-for caseNum in range(cases):
-    BAD_ANAGRAM = True
-    line = sys.stdin.readline().rstrip()
-    word1, word2 = (val for val in line.split(SEPARATOR))
-
-    if word1 != word2 and len(word1) == len(word2):
-        for i in word1:
-            for j in word2:
-                if i != j:
-                    BAD_ANAGRAM = True
-                else:
-                    word2 = list(word2)
-                    word2.remove(j)
-                    BAD_ANAGRAM = False
-                    break
-            if BAD_ANAGRAM:
-                break
-    if BAD_ANAGRAM:
-        print(line, end = "")
-        print(" = NOT AN ANAGRAM")
-    else:
-        print(line, end = "")
-        print(" = ANAGRAM")
+main()

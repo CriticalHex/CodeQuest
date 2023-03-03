@@ -1,26 +1,29 @@
-'''System Module'''
+"""System Module"""
 import sys
 
-SEPARATOR = ","
+
+def coprime(x0: int, x1: int):
+    if x1 > x0:
+        x0, x1 = x1, x0
+    diff = x0 - x1
+    print(f"{x0}-{x1}={diff}")
+    if x0 == x1:
+        if x0 == 1:
+            print("COPRIME")
+            return
+        else:
+            print("NOT COPRIME")
+            return
+    coprime(x1, diff)
 
 
-cases = int(sys.stdin.readline().rstrip())
+def main():
 
-for caseNum in range(cases):
-    line = sys.stdin.readline().rstrip()
-    val1, val2 = (int(val) for val in line.split(SEPARATOR))
-    COPRIME = False
-    OUTPUT = -1
-    while OUTPUT != 0:
-        if val1 < val2:
-            val1, val2 = val2, val1
-        if val1 == 1 and val2 == 1:
-            COPRIME = True
-        OUTPUT = val1 - val2
-        print(val1, "-", val2, "=", OUTPUT, sep = "")
-        val1 = val2
-        val2 = OUTPUT
-    if not COPRIME:
-        print("NOT COPRIME")
-    else:
-        print("COPRIME")
+    cases = int(sys.stdin.readline().rstrip())
+    for _ in range(cases):
+        line = sys.stdin.readline().rstrip()
+        x0, x1 = (int(val) for val in line.split(","))
+        coprime(x0, x1)
+
+
+main()

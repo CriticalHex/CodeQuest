@@ -1,12 +1,14 @@
-'''System module'''
+"""System Module"""
 import sys
 
-SEPARATOR = " "
 
-cases = int(sys.stdin.readline().rstrip())
+def main():
 
-for caseNum in range(cases):
-    line = sys.stdin.readline().rstrip()
-    turkeys, goats, horses = (int(val) for val in line.split(SEPARATOR))
-    print((turkeys * 2) + (goats * 4) + (horses * 4))
-    
+    cases = int(sys.stdin.readline().rstrip())
+    for _ in range(cases):
+        line = sys.stdin.readline().rstrip()
+        turkeys, goats, horses = (int(val) for val in line.split(" "))
+        print((turkeys * 2) + (goats * 4) + (horses * 4))
+
+
+main()
