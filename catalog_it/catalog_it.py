@@ -3,19 +3,28 @@ import sys
 
 
 class Data:
-    def __init__(self, name: str, child: "Data" | None = None) -> None:
+    def __init__(self, name: str, child: "Data" = None) -> None:  # type: ignore
         self.name = name
-        self.children: list[Data] = [child] if child else []
+        self.children: list["Data"] = [child] if child else []
 
 
-def find_entry(root: Data, entry: str):
+def find_entry(root: Data, entry: str):  # type: ignore
     if root.name == entry:
         return root
     for child in root.children:
         if child.name == entry:
             return child
     for child in root.children:
-        return find_entry(child, entry)
+        if x := find_entry(child, entry):  # type: ignore
+            return x  # type: ignore
+
+
+def print_catalouge(catalogue: list[Data], level: int = 0):
+    dashes = "".join("-" for _ in range(level))
+    catalogue.sort(key=lambda x: x.name)
+    for d in catalogue:
+        print(f"{dashes}{d.name}")
+        print_catalouge(d.children, level + 1)
 
 
 def main():
@@ -25,13 +34,16 @@ def main():
         line = sys.stdin.readline().rstrip()
         child, parent = line.split(",")
         for d in catagories:
-            data = find_entry(d, parent)
+            data = find_entry(d, parent)  # type: ignore
             if data is not None:
-                data.children.append(Data(child))
+                data.children.append(Data(child))  # type: ignore
                 break
         else:
-            programs.append(Program(start))
-            programs[-1].dependent_on.append(Program(end))
+            if parent != "None":
+                catagories.append(Data(parent, Data(child)))
+            else:
+                catagories.append(Data(child))
+    print_catalouge(catagories)
 
 
 main()
