@@ -1,5 +1,6 @@
 """System Module"""
 import sys
+import string
 
 
 def pick(
@@ -51,6 +52,7 @@ def build_exec(values: list[int], combos: list[str], used: list[bool], add: int)
                 break
             else:
                 break
+
 
 def attempt_one(values: list[int], combos: list[str], used: list[bool], add: int):
     loop_len = range(len(values))
@@ -107,8 +109,10 @@ def attempt_one(values: list[int], combos: list[str], used: list[bool], add: int
                                                                     )
                                                                 # forloop here
                                                                 used[e] = False
-                                                                sum_str.rstrip(
-                                                                    f"+{values[e]}"
+                                                                sum_str = (
+                                                                    sum_str.rstrip(
+                                                                        f"+{values[e]}"
+                                                                    )
                                                                 )
                                                                 total -= values[e]
                                                             elif (
@@ -125,7 +129,9 @@ def attempt_one(values: list[int], combos: list[str], used: list[bool], add: int
                                                             else:
                                                                 break
                                                     used[d] = False
-                                                    sum_str.rstrip(f"+{values[d]}")
+                                                    sum_str = sum_str.rstrip(
+                                                        f"+{values[d]}"
+                                                    )
                                                     total -= values[d]
                                                 elif total + values[d] == add:
                                                     if sum_str not in combos:
@@ -134,7 +140,7 @@ def attempt_one(values: list[int], combos: list[str], used: list[bool], add: int
                                                 else:
                                                     break
                                         used[c] = False
-                                        sum_str.rstrip(f"+{values[c]}")
+                                        sum_str = sum_str.rstrip(f"+{values[c]}")
                                         total -= values[c]
                                     elif total + values[c] == add:
                                         if sum_str not in combos:
@@ -143,7 +149,7 @@ def attempt_one(values: list[int], combos: list[str], used: list[bool], add: int
                                     else:
                                         break
                             used[b] = False
-                            sum_str.rstrip(f"+{values[b]}")
+                            sum_str = sum_str.rstrip(f"+{values[b]}")
                             total -= values[b]
                         elif total + values[b] == add:
                             if sum_str not in combos:
@@ -152,7 +158,7 @@ def attempt_one(values: list[int], combos: list[str], used: list[bool], add: int
                         else:
                             break
                 used[a] = False
-                sum_str.rstrip(f"+{values[a]}")
+                sum_str = sum_str.rstrip(f"+{values[a]}")
                 total -= values[a]
             elif total + values[a] == add:
                 if sum_str not in combos:
@@ -160,6 +166,116 @@ def attempt_one(values: list[int], combos: list[str], used: list[bool], add: int
                 break
             else:
                 break
+
+
+def attempt_two(
+    values: list[int], combos: list[str], used: list[bool], add: int, i: int, total: int
+):
+    loop_len = range(len(values))
+    sum_str: str = ""
+
+    # total += values[i] came in that way
+    if total > add:
+        return
+    used[i] = True
+    sum_str = str(values[i])
+    if total == add:
+        if sum_str not in combos:
+            combos.append(sum_str)
+        used[i] = False
+        return
+    for a in loop_len:
+        if not used[a]:
+            total += values[a]
+            if total > add:
+                total -= values[a]
+                continue
+            used[a] = True
+            sum_str += f"+{values[a]}"
+            if total == add:
+                if sum_str not in combos:
+                    combos.append(sum_str)
+                used[a] = False
+                total -= values[a]
+                sum_str = sum_str[: len(sum_str) - (1 + len(str(values[a])))]
+                continue
+            for b in loop_len:
+                if not used[b]:
+                    total += values[b]
+                    if total > add:
+                        total -= values[b]
+                        continue
+                    used[b] = True
+                    sum_str += f"+{values[b]}"
+                    if total == add:
+                        if sum_str not in combos:
+                            combos.append(sum_str)
+                        used[b] = False
+                        total -= values[b]
+                        sum_str = sum_str[: len(sum_str) - (1 + len(str(values[b])))]
+                        continue
+                    for c in loop_len:
+                        pass
+                    used[b] = False
+                    total -= values[b]
+                    sum_str = sum_str[: len(sum_str) - (1 + len(str(values[b])))]
+            used[a] = False
+            total -= values[a]
+            sum_str = sum_str[: len(sum_str) - (1 + len(str(values[a])))]
+    used[i] = False
+
+
+def indent(level: int):
+    return "".join("    " for _ in range(level))
+
+def remove_r(text: str):
+    temp = ""
+    for c in text:
+        if c != "\r":
+            temp += c
+    return temp
+
+def attempt_three(values: list[int]):
+    exec_lines: list[str] = []
+    exec_string = """
+    if total > add:
+        return
+    used[i] = True
+    sum_str = str(values[i])
+    if total == add:
+        if sum_str not in combos:
+            combos.append(sum_str)
+        used[i] = False
+        return
+    """
+    exec_string = remove_r(exec_string)
+    for line in exec_string.split("\n"):
+        exec_lines.append(line + "\n")
+
+    above_loop = """
+    if not used[a]:
+        total += values[a]
+        if total > add:
+            total -= values[a]
+            continue
+        used[a] = True
+        sum_str += f"+{values[a]}"
+        if total == add:
+            if sum_str not in combos:
+                combos.append(sum_str)
+            used[a] = False
+            total -= values[a]
+            sum_str = sum_str[:len(sum_str) - (1+len(str(values[a])))]
+            continue
+    """
+    below_loop = """
+    used[a] = False
+    total -= values[a]
+    sum_str = sum_str[: len(sum_str) - (1 + len(str(values[a])))]
+    """
+
+    for i in values:
+        letter = string.ascii_lowercase[i]
 
 
 def main():
@@ -173,7 +289,8 @@ def main():
         values.sort()
         used = [False for _ in range(len(values))]
         combos: list[str] = []
-        build_exec(values, combos, used, add)
+        for i in range(len(values)):
+            attempt_two(values, combos, used, add, i, values[i])
         for combo in combos:
             print(combo)
 

@@ -24,7 +24,8 @@ def pick(
         return
     for i, v in enumerate(values):
         if not picked[i]:
-            pick(values, combos, picked.copy(), build_str, i, add, total + v)
+            pick(values, combos, picked, build_str, i, add, total + v)
+            picked[i] = False
 
 
 def main():
