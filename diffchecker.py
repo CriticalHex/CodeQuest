@@ -9,7 +9,7 @@ script = f"{problem_name}/{problem_name}.py"
 
 input_file_path = f"{problem_name}/input.txt"
 
-with open(input_file_path, "r") as input_file:
+with open(input_file_path, "r", encoding="utf-8") as input_file:
     result = subprocess.run(["python", script], capture_output=True, stdin=input_file)
 
 assert isinstance(result.stdout, bytes)
