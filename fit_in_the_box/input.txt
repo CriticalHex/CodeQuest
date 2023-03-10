@@ -1,0 +1,5 @@
+2
+30 2
+This is the sample input for this problem.
+40 1
+This is the second test case for the sample input, which won't fit.
