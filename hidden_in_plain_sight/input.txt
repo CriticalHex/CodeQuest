@@ -1,0 +1,16 @@
+1
+14
+Earth|4
+Breakfast|2
+lamp|0
+family|4
+cookie|1
+Dear, Bob|4
+Six Flags|3
+Candy|0
+coffee|1
+on the edge|8
+the|2
+America|3
+Split-second|6
+Wow!|3

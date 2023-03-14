@@ -1,11 +1,13 @@
 """System Module"""
 import sys
 
-SEPARATOR = " "
 
-cases = int(sys.stdin.readline().rstrip())
+def main():
 
-for caseNum in range(cases):
-    line = sys.stdin.readline().rstrip()
-    scores = list(int(val) for val in line.split(SEPARATOR))
-    print(max(scores))
+    cases = int(sys.stdin.readline().rstrip())
+
+    for _ in range(cases):
+        print(max([int(val) for val in input().split(" ")]))
+
+
+main()

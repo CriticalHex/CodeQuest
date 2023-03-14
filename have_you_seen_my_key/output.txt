@@ -1,0 +1,2 @@
+[Code Quest is fun! Good luck today! Solve those problems!       ]
+[This plaintext has the same ciphertext but a different key. AAAA]
