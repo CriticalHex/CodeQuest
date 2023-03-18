@@ -1,0 +1,4 @@
+1.1+2.0i RED
+-0.7+0.2i BLACK
+-0.5+0.65i ORANGE
+-0.5+0.608i BLUE
