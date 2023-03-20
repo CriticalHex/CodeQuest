@@ -5,7 +5,7 @@ import sys
 def divide(binary: str):
     divide_by = "1011"
     div = divide_by
-    while int(binary, 2) > 11:
+    while int(binary, 2) >= 11:
         div = divide_by
         while len(div) < len(binary):
             div += "0"

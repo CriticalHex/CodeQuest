@@ -30,10 +30,11 @@ def main():
     cases = int(sys.stdin.readline().rstrip())
     for _ in range(cases):
         line = sys.stdin.readline().rstrip()
-        a, b = (float(val) for val in line.split(" "))
+        a_in, b_in = line.split(" ")
+        a, b = float(a_in), float(b_in)
         c = complex(a, b)
         count = mandelbrot(c)
-        print(f"{a}+{b}i {color(count)}")
+        print(f"{a_in}+{b_in}i {color(count)}")
 
 
 main()
