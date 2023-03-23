@@ -37,5 +37,5 @@ if not equal:
     for i, c in enumerate(gen_lines):
         if gen_lines[i] != expec_lines[i]:
             print(
-                f"{gen_lines[i] + ''.join(' ' for _ in range(longest - len(gen_lines[i])))} | {expec_lines[i]}"
+                f"{gen_lines[i] + ''.join(' ' for _ in range(longest - len(gen_lines[i])))} | {expec_lines[i]} : Line {i + 1}"
             )
