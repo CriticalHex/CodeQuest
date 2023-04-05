@@ -11,15 +11,18 @@ def main():
     for _ in range(cases):
         max_chars, max_lines = (int(val) for val in input().split(" "))
         line = input()
-        if len(line) / max_chars > max_lines:
+        new_lines: list[str] = []
+        while len(line) > max_chars:
+            section = line[:max_chars]
+            i = section.rfind(" ")
+            new_lines.append(line[:i])
+            line = line[i + 1 :]
+        new_lines.append(line)
+        if len(new_lines) > max_lines:
             print("WILL NOT FIT")
         else:
-            while len(line) > max_chars:
-                section = line[0:max_chars]
-                i = find_last_space(section)
-                print(line[0:i])
-                line = line[i + 1 :]
-            print(line)
+            for line in new_lines:
+                print(line)
 
 
 main()
