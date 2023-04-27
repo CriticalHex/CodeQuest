@@ -1,22 +1,39 @@
-"""System Module"""
-import sys
+"""Radioactive Blastervium"""
+
+
+def recurse(
+    targ_periods: int, periods: list[int], n_time_steps: int, multiplier: int = 1
+) -> int:
+    total: int = 0
+    if targ_periods > 1:
+        for i, period in enumerate(periods[: len(periods) - targ_periods + 1]):
+            total += recurse(
+                targ_periods - 1,
+                periods[i + 1 :],
+                n_time_steps,
+                multiplier * period,
+            )
+    else:
+        for period in periods:
+            total += int(n_time_steps / (multiplier * period))
+    return total
 
 
 def main():
-
-    cases = int(sys.stdin.readline().rstrip())
+    """Main"""
+    cases: int = int(input())
     for _ in range(cases):
-        line = sys.stdin.readline().rstrip()
-        n_intervals, time = map(int, line.split(" "))
-        intervals: list[int] = []
-        for _ in range(n_intervals):
-            intervals.append(int(sys.stdin.readline().rstrip()))
-        times: set[int] = set()
-        for interval in intervals:
-            for i in range(interval, time + 1, interval):
-                times.add(i)
-        # print(*times)
-        print(len(times))
+        n_periods, n_time_steps = map(int, input().split())
+        periods: list[int] = []
+        for _ in range(n_periods):
+            periods.append(int(input()))
+        total: int = 0
+        for i in range(1, n_periods + 1):
+            if i % 2:
+                total += recurse(i, periods, n_time_steps)
+            else:
+                total -= recurse(i, periods, n_time_steps)
+        print(total)
 
 
 main()
