@@ -1,12 +1,11 @@
-"""System Module"""
-import sys
+"""Problem Solution"""
 
 
 def main():
 
-    cases = int(sys.stdin.readline().rstrip())
+    cases = int(input())
     for _ in range(cases):
-        line = sys.stdin.readline().rstrip()
+        line = input()
         val1, val2 = (float(val) for val in line.split(" "))
 
 
