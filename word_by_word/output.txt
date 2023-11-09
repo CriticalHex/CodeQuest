@@ -1,0 +1,17 @@
+Average: 4.1
+Median: 4.0
+Modes: 3,4
+Range: 12
+ 1|x
+ 2|xxxxxx
+ 3|xxxxxxxx
+ 4|xxxxxxxx
+ 5|xxx
+ 6|xx
+ 7|x
+ 8|
+ 9|
+10|
+11|x
+12|
+13|x
