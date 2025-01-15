@@ -40,7 +40,7 @@ def main():
         print("Modes: ", end="")
         print(*modes, sep=",")
         print(f"Range: {largest - smallest}")
-        for i in range(1, largest + 1):
+        for i in range(smallest, largest + 1):
             if not counts.get(i):
                 counts[i] = 0
             print(f"{i:>2}|{'x'*counts[i]}")

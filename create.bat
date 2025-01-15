@@ -9,7 +9,11 @@ powershell -C "wget "https://lmcodequestacademy.com/api/static/samples/%*" -O "s
 powershell -C "Expand-Archive -Force samples.zip samples">nul
 del samples.zip
 copy "samples\1.in" "input.txt">nul
-copy "samples\1.out" "output.txt">nul
+if exist "samples\1.out" (
+    copy "samples\1.out" "output.txt">nul
+) else (
+    copy "samples\1.ans" "output.txt">nul
+)
 rmdir /S /Q samples
 if not exist "%formatted_input%.py" (
     copy "%top_dir%\template.py" "%formatted_input%.py">nul
